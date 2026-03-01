@@ -2,11 +2,11 @@ from django.core.management.base import BaseCommand
 from sudokus.models import Sudoku
 
 
-DIFFICULTY_TO_EMPTY = {
-    "Easy": 30,
-    "Medium": 40,
-    "Hard": 50,
-    "Extreme": 55,
+DIFFICULTY_TO_GIVENS = {
+    "Easy": 45,
+    "Medium": 35,
+    "Hard": 25,
+    "Extreme": 17,
 }
 
 
@@ -42,23 +42,28 @@ class Command(BaseCommand):
     def _generate_sudoku(self, difficulty):
         from sudoku import Sudoku as SudokuGenerator
         from sudokus.models import generate_sudoku_name
+        import random
         
         name = generate_sudoku_name()
         self.stdout.write(f"  Generated name: {name}")
 
-        empty_blocks = DIFFICULTY_TO_EMPTY.get(difficulty, 30)
+        givens = DIFFICULTY_TO_GIVENS.get(difficulty, 45)
+        
         generator = SudokuGenerator(3, 3)
-        puzzle_grid = generator.board
-        puzzle = SudokuGenerator(3, 3, board=puzzle_grid)
-        puzzle.empty(3, 3)
-
+        solved = generator.solve()
+        
+        puzzle_board = [row[:] for row in solved.board]
+        cells = [(r, c) for r in range(9) for c in range(9)]
+        random.shuffle(cells)
+        for r, c in cells[:81-givens]:
+            puzzle_board[r][c] = None
+        
         puzzle_grid_list = []
-        for row in puzzle.board:
+        for row in puzzle_board:
             puzzle_grid_list.append([cell if cell is not None else 0 for cell in row])
 
-        solver = SudokuGenerator(3, 3, board=puzzle.board)
         solution_grid_list = []
-        for row in solver.board:
+        for row in solved.board:
             solution_grid_list.append([cell if cell is not None else 0 for cell in row])
 
         Sudoku.objects.create(
