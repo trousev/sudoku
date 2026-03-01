@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sudoku Manager{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#166534',
+                            800: '#14532d',
+                            900: '#14532d',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { font-size: 12pt; }
+            .sudoku-grid { 
+                width: auto !important;
+                max-width: 15cm !important;
+                margin: 0 auto !important;
+            }
+            main { padding: 0 !important; }
+            .sudoku-cell.bg-primary-50 { background-color: white !important; }
+            .sudoku-cell.text-gray-400 { color: black !important; }
+            .shadow-md { box-shadow: none !important; }
+            .rounded-lg { border-radius: 0 !important; }
+        }
+        .sudoku-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            width: max-content;
+            border: 3px solid #166534;
+        }
+        .solution-grid {
+            border-color: #2563eb;
+        }
+        .sudoku-cell {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .sudoku-cell.border-r-2 {
+            border-right: 2px solid #166534;
+        }
+        .solution-grid .sudoku-cell.border-r-2 {
+            border-right: 2px solid #2563eb;
+        }
+        /* Right edge of grid */
+        .sudoku-grid .sudoku-cell:nth-child(9n) {
+            border-right: 1px solid #ccc;
+        }
+        /* Bottom 3x3 box borders - rows 3 and 6 */
+        .sudoku-grid .sudoku-cell:nth-child(n+19):nth-child(-n+27),
+        .sudoku-grid .sudoku-cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom: 2px solid #166534;
+        }
+        .solution-grid .sudoku-cell:nth-child(n+19):nth-child(-n+27),
+        .solution-grid .sudoku-cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom: 2px solid #2563eb;
+        }
+        @media (max-width: 640px) {
+            .sudoku-cell {
+                width: 2rem;
+                height: 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-primary-700 text-white shadow-lg no-print">
+        <div class="max-w-4xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="{% url 'home' %}" class="text-2xl font-bold">Sudoku Manager</a>
+                <a href="{% url 'generate' %}" class="bg-white text-primary-700 px-4 py-2 rounded-lg font-semibold hover:bg-primary-50 transition">
+                    Generate New
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="text-center text-gray-500 py-4 no-print">
+        <p>Sudoku Manager - Create and print puzzles</p>
+    </footer>
+</body>
+</html>
