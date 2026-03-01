@@ -4,3 +4,5 @@ set -e
 uv venv .venv --python 3.12 || true
 source .venv/bin/activate
 uv pip install django py-sudoku
+python sudoku_project/manage.py makemigrations sudoku || true
+python sudoku_project/manage.py migrate

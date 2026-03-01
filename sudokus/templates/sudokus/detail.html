@@ -4,11 +4,27 @@
 
 {% block content %}
 <div class="bg-white rounded-lg shadow-md p-6" style="border: 1px solid transparent;">
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-6 no-print">
-        <div>
-            <a href="{% url 'home' %}" class="text-primary-700 hover:underline">&larr; Back to list</a>
-            <h1 class="text-3xl font-bold text-primary-700 mt-2">{{ sudoku.name }}</h1>
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6 no-print">
+    <div>
+        <a href="{% url 'home' %}" class="text-primary-700 hover:underline">&larr; Back to list</a>
+        <h1 class="text-3xl font-bold text-primary-700 mt-2">{{ sudoku.name }}</h1>
+    </div>
+    <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
+            <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="is_printed" {% if sudoku.is_printed %}checked{% endif %}
+                    class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    onchange="updateStatus()">
+                <span class="text-sm text-gray-600 font-medium">Printed</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="is_solved" {% if sudoku.is_solved %}checked{% endif %}
+                    class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    onchange="updateStatus()">
+                <span class="text-sm text-gray-600 font-medium">Solved</span>
+            </label>
         </div>
+        <div class="h-6 w-px bg-gray-300"></div>
         <div class="flex gap-2">
             <button onclick="toggleSolution()" id="solution-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
                 Show Solution
@@ -21,6 +37,7 @@
             </a>
         </div>
     </div>
+</div>
 
     <div class="flex flex-wrap items-center justify-between gap-2 mb-4 print-only-header">
         <h1 class="text-xl font-bold text-gray-800 print-heading">{{ sudoku.name }}</h1>
@@ -31,8 +48,8 @@
             {% else %}bg-red-100 text-red-800{% endif %}">
             {{ sudoku.difficulty }}
         </span>
-    </div>
-    
+</div>
+
     <div class="flex justify-center">
         <div class="sudoku-grid">
             {% for row in sudoku.puzzle_grid %}
@@ -82,6 +99,22 @@
             btn.classList.remove('bg-gray-600', 'hover:bg-gray-700');
             btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
         }
+    }
+
+    function updateStatus() {
+        const isPrinted = document.getElementById('is_printed').checked;
+        const isSolved = document.getElementById('is_solved').checked;
+        const formData = new FormData();
+        formData.append('is_printed', isPrinted);
+        formData.append('is_solved', isSolved);
+
+        fetch("{% url 'update_status' sudoku.pk %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: formData
+        });
     }
 </script>
 {% endblock %}

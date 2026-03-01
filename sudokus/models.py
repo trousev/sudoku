@@ -3,20 +3,94 @@ from django.db import models
 
 
 ADJECTIVES = [
-    "Happy", "Clever", "Brave", "Gentle", "Swift", "Bright", "Calm", "Kind",
-    "Wise", "Bold", "Fair", "Keen", "Lively", "Merry", "Noble", "Proud",
-    "Silly", "Warm", "Young", "Zesty", "Cool", "Eager", "Free", "Graceful",
-    "Honest", "Joyful", "Kindly", "Lucky", "Mellow", "Nice", "Open", "Peaceful",
-    "Quiet", "Rich", "Smooth", "Tender", "Unique", "Vivid", "Witty", "Zealous",
+    "Happy",
+    "Clever",
+    "Brave",
+    "Gentle",
+    "Swift",
+    "Bright",
+    "Calm",
+    "Kind",
+    "Wise",
+    "Bold",
+    "Fair",
+    "Keen",
+    "Lively",
+    "Merry",
+    "Noble",
+    "Proud",
+    "Silly",
+    "Warm",
+    "Young",
+    "Zesty",
+    "Cool",
+    "Eager",
+    "Free",
+    "Graceful",
+    "Honest",
+    "Joyful",
+    "Kindly",
+    "Lucky",
+    "Mellow",
+    "Nice",
+    "Open",
+    "Peaceful",
+    "Quiet",
+    "Rich",
+    "Smooth",
+    "Tender",
+    "Unique",
+    "Vivid",
+    "Witty",
+    "Zealous",
 ]
 
 NOUNS = [
-    "Panda", "Fox", "Owl", "Bear", "Wolf", "Hawk", "Deer", "Lion",
-    "Tiger", "Eagle", "Dolphin", "Penguin", "Koala", "Otter", "Rabbit",
-    "Swan", "Frog", "Turtle", "Whale", "Shark", "Seal", "Moose", "Elk",
-    "Buffalo", "Crane", "Heron", "Loon", "Jay", "Wren", "Sparrow", "Finch",
-    "Raven", "Crow", "Hare", "Mole", "Vole", "Badger", "Lynx",
-    "Bobcat", "Cougar", "Jaguar", "Leopard", "Panther", "Cheetah", "Gazelle",
+    "Panda",
+    "Fox",
+    "Owl",
+    "Bear",
+    "Wolf",
+    "Hawk",
+    "Deer",
+    "Lion",
+    "Tiger",
+    "Eagle",
+    "Dolphin",
+    "Penguin",
+    "Koala",
+    "Otter",
+    "Rabbit",
+    "Swan",
+    "Frog",
+    "Turtle",
+    "Whale",
+    "Shark",
+    "Seal",
+    "Moose",
+    "Elk",
+    "Buffalo",
+    "Crane",
+    "Heron",
+    "Loon",
+    "Jay",
+    "Wren",
+    "Sparrow",
+    "Finch",
+    "Raven",
+    "Crow",
+    "Hare",
+    "Mole",
+    "Vole",
+    "Badger",
+    "Lynx",
+    "Bobcat",
+    "Cougar",
+    "Jaguar",
+    "Leopard",
+    "Panther",
+    "Cheetah",
+    "Gazelle",
 ]
 
 
@@ -36,9 +110,13 @@ class Sudoku(models.Model):
     ]
 
     name = models.CharField(max_length=100, default=generate_sudoku_name)
-    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default="Easy")
+    difficulty = models.CharField(
+        max_length=10, choices=DIFFICULTY_CHOICES, default="Easy"
+    )
     puzzle_grid = models.JSONField()
     solution_grid = models.JSONField()
+    is_printed = models.BooleanField(default=False)
+    is_solved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
