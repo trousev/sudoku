@@ -8,13 +8,6 @@
         <div>
             <a href="{% url 'home' %}" class="text-primary-700 hover:underline">&larr; Back to list</a>
             <h1 class="text-3xl font-bold text-primary-700 mt-2">{{ sudoku.name }}</h1>
-            <span class="px-2 py-1 text-xs font-semibold rounded 
-                {% if sudoku.difficulty == 'Easy' %}bg-green-100 text-green-800
-                {% elif sudoku.difficulty == 'Medium' %}bg-yellow-100 text-yellow-800
-                {% elif sudoku.difficulty == 'Hard' %}bg-orange-100 text-orange-800
-                {% else %}bg-red-100 text-red-800{% endif %}">
-                {{ sudoku.difficulty }}
-            </span>
         </div>
         <div class="flex gap-2">
             <button onclick="toggleSolution()" id="solution-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
@@ -27,6 +20,17 @@
                 Delete
             </a>
         </div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-4 print-only-header">
+        <h1 class="text-xl font-bold text-gray-800 print-heading">{{ sudoku.name }}</h1>
+        <span class="px-2 py-1 text-xs font-semibold rounded 
+            {% if sudoku.difficulty == 'Easy' %}bg-green-100 text-green-800
+            {% elif sudoku.difficulty == 'Medium' %}bg-yellow-100 text-yellow-800
+            {% elif sudoku.difficulty == 'Hard' %}bg-orange-100 text-orange-800
+            {% else %}bg-red-100 text-red-800{% endif %}">
+            {{ sudoku.difficulty }}
+        </span>
     </div>
     
     <div class="flex justify-center">

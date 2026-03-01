@@ -28,9 +28,12 @@
         }
     </script>
     <style>
+        .print-only-header { display: none; }
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
+            .print-only-header { display: flex !important; }
+            .print-heading { font-size: 16pt !important; }
             body { font-size: 12pt; }
             .sudoku-grid { 
                 width: auto !important;
@@ -42,6 +45,8 @@
             .sudoku-cell.text-gray-400 { color: black !important; }
             .shadow-md { box-shadow: none !important; }
             .rounded-lg { border-radius: 0 !important; }
+            #solution-section { margin-top: 1rem !important; }
+            #solution-section h2 { font-size: 14pt !important; margin-bottom: 0.5rem !important; }
         }
         .sudoku-grid {
             display: grid;
