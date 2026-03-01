@@ -1,0 +1,33 @@
+{% extends "sudokus/base.html" %}
+
+{% block title %}Generate Sudoku{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6 max-w-md mx-auto">
+    <a href="{% url 'home' %}" class="text-primary-700 hover:underline">&larr; Back to list</a>
+    
+    <h1 class="text-3xl font-bold text-primary-700 mt-4 mb-6">Generate New Sudoku</h1>
+    
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div>
+            <label class="block text-gray-700 font-semibold mb-2">Difficulty</label>
+            <div class="grid grid-cols-2 gap-3">
+                {% for diff in difficulties %}
+                <label class="cursor-pointer">
+                    <input type="radio" name="difficulty" value="{{ diff }}" class="peer sr-only" {% if forloop.first %}checked{% endif %}>
+                    <div class="p-4 text-center border-2 border-gray-200 rounded-lg peer-checked:border-primary-700 peer-checked:bg-primary-50 hover:border-primary-300 transition">
+                        <span class="font-semibold {% if diff == 'Easy' %}text-green-600{% elif diff == 'Medium' %}text-yellow-600{% elif diff == 'Hard' %}text-orange-600{% else %}text-red-600{% endif %}">{{ diff }}</span>
+                    </div>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <button type="submit" class="w-full bg-primary-700 text-white py-3 rounded-lg font-semibold hover:bg-primary-800 transition">
+            Generate Sudoku
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "sudokus/base.html" %}
+
+{% block title %}Sudoku Manager - Home{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <h1 class="text-3xl font-bold text-primary-700">Your Sudokus</h1>
+        
+        <div class="flex gap-2">
+            <a href="{% url 'home' %}" class="px-3 py-1 rounded {% if not request.GET.difficulty %}bg-primary-700 text-white{% else %}bg-gray-200 text-gray-700{% endif %}">All</a>
+            <a href="?difficulty=Easy" class="px-3 py-1 rounded {% if request.GET.difficulty == 'Easy' %}bg-primary-700 text-white{% else %}bg-gray-200 text-gray-700{% endif %}">Easy</a>
+            <a href="?difficulty=Medium" class="px-3 py-1 rounded {% if request.GET.difficulty == 'Medium' %}bg-primary-700 text-white{% else %}bg-gray-200 text-gray-700{% endif %}">Medium</a>
+            <a href="?difficulty=Hard" class="px-3 py-1 rounded {% if request.GET.difficulty == 'Hard' %}bg-primary-700 text-white{% else %}bg-gray-200 text-gray-700{% endif %}">Hard</a>
+            <a href="?difficulty=Extreme" class="px-3 py-1 rounded {% if request.GET.difficulty == 'Extreme' %}bg-primary-700 text-white{% else %}bg-gray-200 text-gray-700{% endif %}">Extreme</a>
+        </div>
+    </div>
+    
+    {% if sudokus %}
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {% for sudoku in sudokus %}
+        <a href="{% url 'detail' sudoku.pk %}" class="block p-6 bg-gray-50 rounded-lg border border-gray-200 hover:border-primary-500 hover:shadow-md transition">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold text-gray-800">{{ sudoku.name }}</h2>
+                <span class="px-2 py-1 text-xs font-semibold rounded 
+                    {% if sudoku.difficulty == 'Easy' %}bg-green-100 text-green-800
+                    {% elif sudoku.difficulty == 'Medium' %}bg-yellow-100 text-yellow-800
+                    {% elif sudoku.difficulty == 'Hard' %}bg-orange-100 text-orange-800
+                    {% else %}bg-red-100 text-red-800{% endif %}">
+                    {{ sudoku.difficulty }}
+                </span>
+            </div>
+            <p class="text-gray-500 text-sm mt-2">Created: {{ sudoku.created_at|date:"M d, Y" }}</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">No sudokus yet. Generate your first one!</p>
+        <a href="{% url 'generate' %}" class="inline-block mt-4 bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-800 transition">
+            Generate Sudoku
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
