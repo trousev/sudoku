@@ -3,7 +3,7 @@
 {% block title %}Sudoku - {{ sudoku.name }}{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-lg shadow-md p-6">
+<div class="bg-white rounded-lg shadow-md p-6" style="border: 1px solid transparent;">
     <div class="flex flex-wrap items-center justify-between gap-4 mb-6 no-print">
         <div>
             <a href="{% url 'home' %}" class="text-primary-700 hover:underline">&larr; Back to list</a>
@@ -30,57 +30,54 @@
     </div>
     
     <div class="flex justify-center">
-        <div class="sudoku-grid border-2 border-primary-700 inline-block">
+        <div class="sudoku-grid">
             {% for row in sudoku.puzzle_grid %}
-            <div class="sudoku-row flex">
                 {% for cell in row %}
-                <div class="sudoku-cell border border-gray-300 flex items-center justify-center
-                    {% if cell == 0 %}bg-white text-gray-400{% else %}bg-primary-50 text-gray-800 font-semibold{% endif %}">
+                <div class="sudoku-cell
+                    {% if cell == 0 %}bg-white text-gray-400{% else %}bg-primary-50 text-gray-800 font-semibold{% endif %}
+                    {% if forloop.counter == 3 or forloop.counter == 6 %}border-r-2 border-r-primary-700{% endif %}">
                     {% if cell != 0 %}{{ cell }}{% endif %}
                 </div>
                 {% endfor %}
-            </div>
             {% endfor %}
         </div>
     </div>
 
-    <div id="solution-section" class="hidden mt-8">
-        <h2 class="text-2xl font-bold text-center text-primary-700 mb-4">Solution</h2>
-        <div class="flex justify-center">
-            <div class="sudoku-grid border-2 border-blue-600 inline-block">
-                {% for row in sudoku.solution_grid %}
-                <div class="sudoku-row flex">
-                    {% for cell in row %}
-                    <div class="sudoku-cell border border-gray-300 flex items-center justify-center bg-blue-50 text-gray-800 font-semibold">
-                        {{ cell }}
-                    </div>
-                    {% endfor %}
+<div id="solution-section" class="hidden mt-8">
+    <h2 class="text-2xl font-bold text-center text-primary-700 mb-4">Solution</h2>
+    <div class="flex justify-center">
+        <div class="sudoku-grid solution-grid">
+            {% for row in sudoku.solution_grid %}
+                {% for cell in row %}
+                <div class="sudoku-cell bg-blue-50 text-gray-800 font-semibold
+                    {% if forloop.counter == 3 or forloop.counter == 6 %}border-r-2 border-r-blue-600{% endif %}">
+                    {{ cell }}
                 </div>
                 {% endfor %}
-            </div>
+            {% endfor %}
         </div>
     </div>
-    
-    <div class="mt-6 text-center text-gray-500 text-sm no-print">
-        <p>Puzzle ID: {{ sudoku.pk }} | Created: {{ sudoku.created_at|date:"M d, Y H:i" }}</p>
-    </div>
-
-    <script>
-        function toggleSolution() {
-            const section = document.getElementById('solution-section');
-            const btn = document.getElementById('solution-btn');
-            if (section.classList.contains('hidden')) {
-                section.classList.remove('hidden');
-                btn.textContent = 'Hide Solution';
-                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                btn.classList.add('bg-gray-600', 'hover:bg-gray-700');
-            } else {
-                section.classList.add('hidden');
-                btn.textContent = 'Show Solution';
-                btn.classList.remove('bg-gray-600', 'hover:bg-gray-700');
-                btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-            }
-        }
-    </script>
 </div>
+
+<div class="mt-6 text-center text-gray-500 text-sm no-print">
+    <p>Puzzle ID: {{ sudoku.pk }} | Created: {{ sudoku.created_at|date:"M d, Y H:i" }}</p>
+</div>
+
+<script>
+    function toggleSolution() {
+        const section = document.getElementById('solution-section');
+        const btn = document.getElementById('solution-btn');
+        if (section.classList.contains('hidden')) {
+            section.classList.remove('hidden');
+            btn.textContent = 'Hide Solution';
+            btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            btn.classList.add('bg-gray-600', 'hover:bg-gray-700');
+        } else {
+            section.classList.add('hidden');
+            btn.textContent = 'Show Solution';
+            btn.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+        }
+    }
+</script>
 {% endblock %}
